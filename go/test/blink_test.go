@@ -1,25 +1,27 @@
-package blink
+package test
 
 import (
 	"bytes"
 	"testing"
+
+	blink "github.com/jonnycap/blink/go"
 )
 
 func TestPublishFrameEncodedDecode(t *testing.T){
-	original := NewPublishFrame([]byte("jwt123"), 43, []byte("hello world"))
+	original := blink.NewPublishFrame([]byte("jwt123"), 43, []byte("hello world"))
 
 	buf := new(bytes.Buffer)
-	err := EncodeFrame(buf, original)
+	err := blink.EncodeFrame(buf, original)
 	if err != nil {
 		t.Fatalf("ecode failed: %v", err)
 	}
 
-	decoded, err := ParseFrame(buf)
+	decoded, err := blink.ParseFrame(buf)
 	if err != nil {
 		t.Fatalf("decode failed: %v", err)
 	}
 
-	pub, ok := decoded.(*PublishFrame)
+	pub, ok := decoded.(*blink.PublishFrame)
 	if !ok {
 		t.Fatalf("decoded frame has wrong type: %T", decoded)
 	}
